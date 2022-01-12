@@ -1,0 +1,9 @@
+PUT /elastic-search-index(index_name)
+{
+    "settings": {
+        "index": {
+            "number_of_shards": 3,
+            "number_of_replicas": 2
+        }
+    }
+}
