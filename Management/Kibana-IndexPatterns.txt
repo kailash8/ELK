@@ -1,0 +1,5 @@
+1. Click on Stack Management
+2. Select required index
+
+Here we can edit the data type of any field or add any field in our index field with its datatype.
+We can also parse format of date fields.
