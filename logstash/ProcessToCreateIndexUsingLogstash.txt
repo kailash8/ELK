@@ -1,0 +1,58 @@
+Steps:
+
+1. Create logstash configuration file which we need to keep in folder /disk(number_of_disk)/logstash/config
+2. Create config file with conf extesion. 
+Example: elastic-index-test.conf
+3. Put all required configurations like mentioned below: Below configuration is used to create index on day basis. put this configuration in above mentioned path.
+
+input {
+kafka {
+bootstrap_servers => "10.10.10.10:1010"
+topics => "elastic-index-test"
+group_id => "elastic-index-test_20221201"
+max_poll_interval_ms => "300000"
+heartbeat_interval_ms => "20000"
+session_timeout_ms => "120000"
+# partition_assignment_strategy => "org.apache.kafka.clients.consumer.RoundRobinAssignor"
+enable_auto_commit => "false"
+consumer_threads => 2
+}
+}
+filter
+{
+json {
+source => "message"
+}
+mutate {
+remove_field => ["[type]","[offset]","[input]","[beat][version]","[beat][name]","[beat][hostname]"]
+}
+date
+{
+match => [ "ts", "dd/MMM/yyyy:HH:mm:ss Z", "yyyy-MM-dd HH:mm:ss", "dd/MMM/yyyy:HH:mm:ss.SSS"]
+timezone => "Asia/Kolkata"
+target => "ts"
+}
+}
+output{
+elasticsearch {
+hosts => ['20.20.20.20:2020','30.30.30.30:30','40.40.40.40:4040','50.50.50.50:50']
+index => ["elastic-index-test-%{+YYYY.MM.dd}"]
+user => usertest
+password => "usertest"
+}
+}
+
+4. Now we need to build pipeline on mentioned logstash configuration file.
+Fot this we need to go to below mentioned path and put below mentioned configurations.
+path: /etc/logstash/pipeline.yml
+
+- pipeline.id: elastic-index-test
+path.config: "/disk(number_if_any)/logstash/config/elastic-index-test.conf"
+pipeline.workers: 4
+pipeline.batch.size: 2000
+pipeline.batch.delay: 50
+
+5. Once this process it done go to elasticsearch UI. 
+Management -> Stack Management -> Kibana -> Index Pattern -> Create index pattern 
+
+Make sure we are getting continuosly data our index. 
