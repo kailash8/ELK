@@ -1,0 +1,27 @@
+To see mapping of all the field in particular index
+1. Click on Index Management 
+2. Click on Required Index 
+3. Click on mapping to see data type of each fileds
+
+To Create Explicitly pattern for any index
+1. Click on Index Management 
+2. Click on Index Template
+3. Go to Legacy Index Template
+4. Click on Create legacy template
+Now In first Step we are in Logistics:
+1. Mention Index Name
+2. Enter Index Pattern name which was created earlier
+Move to Index Settings:
+1. Use Json format for entries
+2. Enter Behaviour of Index like {"number_of_replicas":1}
+Move to Mapping
+1. Enter field type for each field manually 
+OR
+1. Click on Load Json -> paste the josn available in curly brackets available after filed "_docs": {...} (Note if we are coping mapping 
+from some refence index then we will get _docs type of key. Also, Not we that we considering curly brackets too while 
+parsting json in load json prompt) -> Click on Load and Overwrite
+2. Review all the fileds and their type. If required we can edit field here and their data types.
+Move to Review template
+1. Revivew all the details
+2. Click on create template for explicite setting of index pattern
+
